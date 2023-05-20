@@ -3,6 +3,8 @@
 Visit tor sites with out using Tor.
 Connects the darkweb to the clearnet.
 
+You just have to open any browser type the url given by the program and `/the darkweb site.onion`
+
 - Option for both local and public Dark2Clean Service aka host the service on ngrok.
 
 #### Note 
@@ -13,7 +15,7 @@ Connects the darkweb to the clearnet.
 ### Installing
  
 ```sh
-git clone
+git clone https://github.com/merwin-asm/Dark2Clean.git
 cd Dark2Clean 
 pip install -r requirements.py
 ```
