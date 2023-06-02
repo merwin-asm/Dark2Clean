@@ -29,5 +29,5 @@ python main.py
 # or
 python3 main.py
 ```
-<img src="https://cdn.discordapp.com/attachments/1090997141582921818/1109462696816021565/image.png">
+<img src="https://cdn.discordapp.com/attachments/951417646191083551/1114062812336115752/Screenshot_from_2023-05-20_18-49-48.png">
 
