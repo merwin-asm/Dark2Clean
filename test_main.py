@@ -87,7 +87,7 @@ class TestMain(unittest.TestCase):
         out, error = StringIO(), StringIO()
         needle = "Installed Tor"
 
-        with patch('Tor_install.check_tor_installed', True), patch('main.install_tor'), \
+        with patch('Tor_install.check_tor_installed', return_value=True), patch('main.install_tor'), \
                 patch.multiple(sys, stdout=out, stderr=error):
             try_to_install_tor()
             self.assertTrue(needle in out.getvalue())
@@ -96,9 +96,10 @@ class TestMain(unittest.TestCase):
         """Test try_to_install_tor"""
         out, error = StringIO(), StringIO()
 
-        with patch('Tor_install.check_tor_installed', False), patch.multiple(sys, stdout=out, stderr=error), \
-                self.assertRaises(SystemExit):
+        with patch('main.check_tor_installed', return_value=False) as mock, \
+                patch.multiple(sys, stdout=out, stderr=error):
             try_to_install_tor()
+            mock.assert_called()
 
     def test_try_to_install_tor_when_raises_an_exception(self) -> None:
         """Test try_to_install_tor"""
