@@ -7,6 +7,9 @@ from .os_interaction import OSInteraction
 
 
 class WindowsInteraction(OSInteraction):
+    def start(self) -> None:
+        subprocess.run(['net', 'start', 'tor'])
+
     def install(self) -> None:
         # Download Tor browser bundle for Windows
         # TODO: something to get always the latest version

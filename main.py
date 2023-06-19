@@ -32,15 +32,8 @@ async def get(e):
 def start_tor():
     print("[green]  [+] Starting Tor [/green]")
 
-    if sys.platform.startswith('linux'):
-        subprocess.run(['sudo', 'service', 'tor', 'start'])
-    elif sys.platform.startswith('win'):
-        subprocess.run(['net', 'start', 'tor'])
-    elif sys.platform.startswith('darwin'):
-        subprocess.run(['sudo', 'launchctl', 'start', 'homebrew.mxcl.tor'])
-    else:
-        print("[red]  [-] Unsupported operating system. [/red]")
-        exit()
+    interaction = InteractionFactory.get_interaction(sys.platform)
+    interaction.start()
 
     print("[green]  [+] Tor service restarted successfully.[/green]")
 
