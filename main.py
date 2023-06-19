@@ -1,7 +1,7 @@
 from fastapi.responses import HTMLResponse
 from fastapi import FastAPI, HTTPException
+import requests
 import uvicorn
-import sys
 
 from Tor_install import *
 from pyngrok import ngrok
