@@ -10,15 +10,16 @@ import atexit
 
 
 _connection = None
-tor_proxy = {
-     'http': 'socks5h://localhost:9050',
-     'https': 'socks5h://localhost:9050'
-}
 app = FastAPI()
 
 
 @app.get('/{e}', response_class=HTMLResponse)
 async def get(e):
+    tor_proxy = {
+        'http': 'socks5h://localhost:9050',
+        'https': 'socks5h://localhost:9050'
+    }
+
     if not e.startswith("http://") or e.startswith("https://"):
         e = "http://" + e
 
@@ -44,12 +45,12 @@ def close():
     ngrok.disconnect(_connection.public_url)
 
 
-def start_ngrok(auth, t):
+def start_ngrok(auth, protocol):
     global _connection
 
     ngrok.set_auth_token(auth)
     
-    if t == "2":
+    if protocol == "2":
         _connection = ngrok.connect(8088, "http")
     else:
         _connection = ngrok.connect(8088, "tcp")

@@ -18,8 +18,8 @@ class WindowsInteraction(OSInteraction):
         tor_installer_path = "torbrowser-install.exe"
 
         # Save the Tor installer
-        with open(tor_installer_path, 'wb') as f:
-            f.write(response.content)
+        with open(tor_installer_path, 'wb') as file:
+            file.write(response.content)
 
         # Run the Tor installer silently
         subprocess.run([tor_installer_path, '/S'])

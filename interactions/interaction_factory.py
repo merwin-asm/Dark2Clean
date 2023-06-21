@@ -4,7 +4,7 @@ from interactions.os import WindowsInteraction, LinuxInteraction, MacosInteracti
 class InteractionFactory:
     @staticmethod
     def get_interaction(operative_system: str) -> OSInteraction:
-        if 'win' in operative_system:
+        if 'windows' in operative_system:
             return WindowsInteraction()
         elif 'linux' in operative_system:
             return LinuxInteraction()

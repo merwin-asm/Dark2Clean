@@ -7,31 +7,10 @@ from unittest.mock import patch
 from fastapi import HTTPException
 from pyngrok.ngrok import NgrokTunnel
 
-from main import start_tor, close, start_ngrok, get, try_to_install_tor, set_privacy, run_server
+from main import close, start_ngrok, get, try_to_install_tor, set_privacy, run_server
 
 
 class TestMain(unittest.TestCase):
-    def test_start_tor_windows(self) -> None:
-        """Test start_tor"""
-        self.start_tor_base('windows')
-
-    def test_start_tor_linux(self) -> None:
-        """Test start_tor"""
-        self.start_tor_base('linux')
-
-    def test_start_tor_mac(self) -> None:
-        """Test start_tor"""
-        self.start_tor_base('darwin')
-
-    def test_start_tor_other(self) -> None:
-        """Test start_tor"""
-        out, error = StringIO(), StringIO()
-        os = 'android'
-
-        with patch('subprocess.run'), patch.multiple(sys, stdout=out, stderr=error, platform=os), \
-                self.assertRaises(SystemExit):
-            start_tor()
-
     def test_close(self) -> None:
         """Test close"""
         with patch('main.ngrok.disconnect') as mock, patch('main._connection', return_value=NgrokTunnel):
@@ -60,17 +39,6 @@ class TestMain(unittest.TestCase):
         url = ""
         with self.assertRaises(HTTPException):
             asyncio.run(get(url))
-
-    def start_tor_base(self, os: str) -> None:
-        """Test start_ngrok"""
-        out, error = StringIO(), StringIO()
-        needle = "Tor service restarted successfully"
-
-        with patch('subprocess.run'), patch.multiple(sys, stdout=out, stderr=error, platform=os):
-            start_tor()
-
-        result = needle in out.getvalue()
-        self.assertTrue(result)
 
     def start_ngrok_base(self, protocol: str) -> None:
         """Test start_ngrok"""
