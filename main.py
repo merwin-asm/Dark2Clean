@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 import requests
 import uvicorn
 
+from converters import OptionToProtocolConverter
 from Tor_install import *
 from pyngrok import ngrok
 from rich import print
@@ -14,18 +15,18 @@ app = FastAPI()
 
 
 @app.get('/{e}', response_class=HTMLResponse)
-async def get(e):
+async def get(tor_url):
     tor_proxy = {
         'http': 'socks5h://localhost:9050',
         'https': 'socks5h://localhost:9050'
     }
 
-    if not e.startswith("http://") or e.startswith("https://"):
-        e = "http://" + e
+    if not tor_url.startswith("http://") or tor_url.startswith("https://"):
+        tor_url = "http://" + tor_url
 
     try:
-        t = requests.get(e, proxies=tor_proxy)
-        return t.text
+        response = requests.get(tor_url, proxies=tor_proxy)
+        return response.text
     except:
         raise HTTPException(status_code=500, detail="Server error")
 
@@ -45,16 +46,12 @@ def close():
     ngrok.disconnect(_connection.public_url)
 
 
-def start_ngrok(auth, protocol):
+def start_ngrok(auth, protocol_option):
     global _connection
 
     ngrok.set_auth_token(auth)
-    
-    if protocol == "2":
-        _connection = ngrok.connect(8088, "http")
-    else:
-        _connection = ngrok.connect(8088, "tcp")
-
+    protocol = OptionToProtocolConverter.convert(protocol_option)
+    _connection = ngrok.connect(8088, protocol)
     print(f"\n[bold][dark_orange]Ngrok Public URL : {_connection.public_url}[/dark_orange][/bold]\n\n")
 
     atexit.register(close)
