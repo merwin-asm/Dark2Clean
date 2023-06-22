@@ -4,12 +4,12 @@ from interactions.os import WindowsInteraction, LinuxInteraction, MacosInteracti
 class InteractionFactory:
     @staticmethod
     def get_interaction(operative_system: str) -> OSInteraction:
-        if 'windows' in operative_system:
-            return WindowsInteraction()
+        if 'darwin' in operative_system:
+            return MacosInteraction()
         elif 'linux' in operative_system:
             return LinuxInteraction()
-        elif 'darwin' in operative_system:
-            return MacosInteraction()
+        elif 'win' in operative_system:
+            return WindowsInteraction()
         else:
             print('Unsupported operative system')
             exit()
