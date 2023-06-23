@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from interactions.os import OSInteraction, MacosInteraction
+from tor.interactions.os import OSInteraction, MacosInteraction
 
 
 class TestMacos(unittest.TestCase):

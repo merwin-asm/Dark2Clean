@@ -1,4 +1,4 @@
-from interactions.os import WindowsInteraction, LinuxInteraction, MacosInteraction, OSInteraction
+from tor.interactions.os import WindowsInteraction, LinuxInteraction, MacosInteraction, OSInteraction
 
 
 class InteractionFactory:

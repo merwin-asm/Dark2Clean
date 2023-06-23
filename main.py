@@ -3,8 +3,8 @@ from fastapi import FastAPI, HTTPException
 import requests
 import uvicorn
 
+from tor import Tor
 from converters import OptionToProtocolConverter
-from Tor_install import *
 from pyngrok import ngrok
 from rich import print
 import atexit
@@ -15,29 +15,20 @@ app = FastAPI()
 
 
 @app.get('/{e}', response_class=HTMLResponse)
-async def get(tor_url):
+async def get(onion_url):
     tor_proxy = {
         'http': 'socks5h://localhost:9050',
         'https': 'socks5h://localhost:9050'
     }
 
-    if not tor_url.startswith("http://") or tor_url.startswith("https://"):
-        tor_url = "http://" + tor_url
+    if not onion_url.startswith("http://") or onion_url.startswith("https://"):
+        onion_url = "http://" + onion_url
 
     try:
-        response = requests.get(tor_url, proxies=tor_proxy)
+        response = requests.get(onion_url, proxies=tor_proxy)
         return response.text
     except:
         raise HTTPException(status_code=500, detail="Server error")
-
-
-def start_tor():
-    print("[green]  [+] Starting Tor [/green]")
-
-    interaction = InteractionFactory.get_interaction(sys.platform)
-    interaction.start()
-
-    print("[green]  [+] Tor service restarted successfully.[/green]")
 
 
 def close():
@@ -55,18 +46,6 @@ def start_ngrok(auth, protocol_option):
     print(f"\n[bold][dark_orange]Ngrok Public URL : {_connection.public_url}[/dark_orange][/bold]\n\n")
 
     atexit.register(close)
-
-
-def try_to_install_tor():
-    print("[blue]  [=] Checking if Tor installed[/blue]")
-    if not check_tor_installed():
-        print("[red]  [-] Tor not found -- >  Installing Tor[/red]")
-        try:
-            install_tor()
-            print("[green]  [+] Installed Tor[/green]")
-        except:
-            print("[red]  [-] Tor couldn't be installed -- > Exiting[/red]")
-            exit()
 
 
 def set_privacy():
@@ -97,8 +76,10 @@ def run_server():
 
 
 def main():
-    try_to_install_tor()
-    start_tor()
+    tor: Tor = Tor()
+
+    tor.install()
+    tor.start()
     set_privacy()
     run_server()
 

@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import patch
 
-from interactions.os import OSInteraction, WindowsInteraction
+from tor.interactions.os import OSInteraction, LinuxInteraction
 
 
-class TestWindows(unittest.TestCase):
+class TestLinux(unittest.TestCase):
     def setUp(self) -> None:
-        self.interaction: OSInteraction = WindowsInteraction()
+        self.interaction: OSInteraction = LinuxInteraction()
 
     def test_start(self) -> None:
         with patch('subprocess.run') as mock:
@@ -14,8 +14,8 @@ class TestWindows(unittest.TestCase):
             mock.assert_called()
 
     def test_install(self) -> None:
-        with patch('subprocess.run') as mock, patch('requests.get'):
-            self.interaction.start()
+        with patch('subprocess.run') as mock:
+            self.interaction.install()
             mock.assert_called()
 
 

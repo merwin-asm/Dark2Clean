@@ -13,7 +13,7 @@ class WindowsInteraction(OSInteraction):
     def install(self) -> None:
         # Download Tor browser bundle for Windows
         # TODO: something to get always the latest version
-        download_url = "https://dist.torproject.org/torbrowser/12.0.7/torbrowser-install-win64-12.0.7_ALL.exe"
+        download_url = "https://dist.torproject.org/torbrowser/12.5/torbrowser-install-win64-12.5_ALL.exe"
         response = requests.get(download_url)
         tor_installer_path = "torbrowser-install.exe"
 

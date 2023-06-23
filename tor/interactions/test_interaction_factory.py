@@ -1,7 +1,7 @@
 import unittest
 
-from interactions import InteractionFactory
-from interactions.os import OSInteraction, WindowsInteraction, LinuxInteraction, MacosInteraction
+from tor.interactions import InteractionFactory
+from tor.interactions.os import OSInteraction, WindowsInteraction, LinuxInteraction, MacosInteraction
 
 
 class TestInteractionFactory(unittest.TestCase):

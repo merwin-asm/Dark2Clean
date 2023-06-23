@@ -7,7 +7,7 @@ from unittest.mock import patch
 from fastapi import HTTPException
 from pyngrok.ngrok import NgrokTunnel
 
-from main import close, start_ngrok, get, try_to_install_tor, set_privacy, run_server
+from main import close, start_ngrok, get, set_privacy, run_server
 
 
 class TestMain(unittest.TestCase):
@@ -49,34 +49,6 @@ class TestMain(unittest.TestCase):
         with patch.multiple(sys, stdout=out, stderr=error), patch('main.ngrok.connect', return_value=connection):
             start_ngrok("", protocol)
             self.assertTrue(needle in out.getvalue())
-
-    def test_try_to_install_tor_when_tor_is_installed(self) -> None:
-        """Test try_to_install_tor"""
-        out, error = StringIO(), StringIO()
-        needle = "Installed Tor"
-
-        with patch('Tor_install.check_tor_installed', return_value=True), patch('main.install_tor'), \
-                patch.multiple(sys, stdout=out, stderr=error):
-            try_to_install_tor()
-            self.assertTrue(needle in out.getvalue())
-
-    def test_try_to_install_tor_when_tor_is_not_installed(self) -> None:
-        """Test try_to_install_tor"""
-        out, error = StringIO(), StringIO()
-
-        with patch('main.check_tor_installed', return_value=False) as mock, \
-                patch.multiple(sys, stdout=out, stderr=error):
-            try_to_install_tor()
-            mock.assert_called()
-
-    def test_try_to_install_tor_when_raises_an_exception(self) -> None:
-        """Test try_to_install_tor"""
-        out, error = StringIO(), StringIO()
-
-        with patch('Tor_install.check_tor_installed', return_value=True), \
-                patch('main.install_tor', side_effect=Exception), \
-                patch.multiple(sys, stdout=out, stderr=error), self.assertRaises(SystemExit):
-            try_to_install_tor()
 
     def test_set_privacy_when_input_is_1(self) -> None:
         """Test set_privacy"""
