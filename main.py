@@ -33,7 +33,7 @@ def main():
     tor.install()
     tor.start()
     ngrok.set_privacy()
-    ngrok.run_server()
+    ngrok.run()
 
 
 if __name__ == '__main__':
