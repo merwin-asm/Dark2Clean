@@ -3,7 +3,7 @@ import requests
 import platform
 import os
 
-
+from bs4 import BeautifulSoup
 
 
 def check_tor_installed():
@@ -15,7 +15,7 @@ def check_tor_installed():
 
 def install_tor_windows():
     # Download Tor browser bundle for Windows
-    download_url = "https://www.torproject.org/dist/torbrowser/10.5.2/torbrowser-install-10.5.2_en-US.exe"
+    download_url = get_latest_version_link()
     response = requests.get(download_url)
     tor_installer_path = "torbrowser-install.exe"
     
@@ -44,6 +44,22 @@ def install_tor():
         install_tor_linux()
     elif platform.system() == 'Darwin':
         install_tor_macos()
+
+def get_latest_version_link():
+    url = 'https://www.torproject.org/download/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, features="html.parser")
+    link = soup.find('a', attrs={'class': 'downloadLink'}, string="Download for Windows")
+
+    if link is not None:
+        href = link.get('href')
+        return create_download_link(href)
+    else:
+        print('Cant get a valid windows download link from https://www.torproject.org/download/')
+        exit()
+
+def create_download_link(href):
+    return 'https://www.torproject.org' + href
         
 
 
